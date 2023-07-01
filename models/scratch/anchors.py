@@ -17,7 +17,7 @@ import itertools
 from math import sqrt
 import numpy as np
 
-from . import math_utils
+from ... import math_utils
 
 
 def _compute_anchor_sizes():

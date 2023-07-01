@@ -20,7 +20,7 @@ from torch import nn
 from torch.nn import functional as F
 from torchvision.ops import nms
 
-from . import math_utils
+from .scratch import math_utils
 
 
 class RegionProposalNetwork(nn.Module):

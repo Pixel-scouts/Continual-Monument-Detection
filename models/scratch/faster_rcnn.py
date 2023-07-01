@@ -17,11 +17,11 @@ from torch import nn
 from torchvision.ops import nms
 
 from pytorch.FasterRCNN import utils
-from . import anchors
+from .scratch import anchors
 from . import math_utils
-from . import vgg16
+from .. import vgg16
 from . import rpn
-from . import detector
+from .. import detector
 
 
 class FasterRCNNModel(nn.Module):
