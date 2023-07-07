@@ -12,10 +12,14 @@ class CustomArgumentParser(argparse.ArgumentParser):
 
 
 
-
-
-
 def extract_frames(video_path, output_dir):
+    """
+    Extaracts frames from the given video file and saves to output directory.
+    
+    Parameters:
+    - Videos_path (String): Path to Video file to extract frames from
+    - output_dir (String): Path to folder to save extracted frames
+    """
 
     # create output Directory if not present
     os.makedirs(output_dir, exist_ok=True)
@@ -41,7 +45,6 @@ def extract_frames(video_path, output_dir):
             # orientation=cap.get(cv2.CAP_PROP_ORIENTATION_META)
             # print(orientation)
             frame_file = os.path.join(output_dir, f"{filename}_frame_{frame_count}.jpg")
-            print(frame_file)
             cv2.imwrite(frame_file, frame)
         frame_count += 1
     
