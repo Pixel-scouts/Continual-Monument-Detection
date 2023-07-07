@@ -1,5 +1,3 @@
-from moviepy.editor import VideoFileClip
-from PIL import Image
 import cv2
 import numpy as np
 import os
@@ -12,11 +10,9 @@ class CustomArgumentParser(argparse.ArgumentParser):
         print("Use --help for available options.")
         self.exit(2)
 
-parser = CustomArgumentParser(prog='Frame',description="Extract frames from a videos")
-parser.add_argument("-v", "--video", type=str, help="Path to the video file")
-parser.add_argument("-o", "--output", type=str, help="Path to the output directory")
 
-args = parser.parse_args()
+
+
 
 
 def extract_frames(video_path, output_dir):
@@ -51,6 +47,10 @@ def extract_frames(video_path, output_dir):
     
 
 if __name__ == "__main__":
+    parser = CustomArgumentParser(prog='Frame',description="Extract frames from a videos")
+    parser.add_argument("-v", "--video", type=str, help="Path to the video file")
+    parser.add_argument("-o", "--output", type=str, help="Path to the output directory")
+    args = parser.parse_args()
     video_path = args.video
     output_dir = args.output
 
