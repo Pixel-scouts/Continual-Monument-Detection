@@ -12,13 +12,14 @@ class CustomArgumentParser(argparse.ArgumentParser):
 
 
 
-def extract_frames(video_path, output_dir):
+def extract_frames(video_path, output_dir,frame_rate = 10):
     """
     Extaracts frames from the given video file and saves to output directory.
     
     Parameters:
     - Videos_path (String): Path to Video file to extract frames from
     - output_dir (String): Path to folder to save extracted frames
+    -frame_rate (Int): Number of frames to save per second
     """
 
     # create output Directory if not present
@@ -27,8 +28,7 @@ def extract_frames(video_path, output_dir):
     cap = cv2.VideoCapture(video_path)
     # get the fps from video
     fps = cap.get(cv2.CAP_PROP_FPS)
-    # set number of frames to save per second
-    frame_rate = 10
+    
     # get the nth frame to save, others are discarded
     frame_save = round(fps / frame_rate)
     frame_count = 0
