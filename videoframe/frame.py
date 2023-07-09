@@ -2,6 +2,31 @@ import cv2
 import numpy as np
 import os
 import argparse
+parser = argparse.ArgumentParser(description="Extract frames from a video")
+parser.add_argument("-v", "--video", type=str, help="Path to the video file")
+parser.add_argument("-o", "--output", type=str, help="Path to the output directory")
+args = parser.parse_args()
+
+
+def extract_frames(video_path, output_dir):
+    os.makedirs(output_dir, exist_ok=True)
+    # orientation = get_video_orientation(video_path)
+    cap = cv2.VideoCapture(video_path)
+    # clip = VideoFileClip(video_path)
+
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    frame_rate = 10
+    frame_save = round(fps / frame_rate)
+    frame_count = 0
+
+    print(video_path)
+    print(output_dir)
+
+    while True:
+        is_read, frame = cap.read()
+        filename = os.path.splitext(os.path.basename(video_path))[0]
+        if not is_read:
+            break
 
 # Custom ArgumentParser for custom error message
 class CustomArgumentParser(argparse.ArgumentParser):
