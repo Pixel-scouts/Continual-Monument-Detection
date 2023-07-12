@@ -6,22 +6,13 @@ import matplotlib.pyplot as plt
 import albumentations as A
 import numpy as np
 
-
-if __name__=="__main__":
-    parser = argparse.ArgumentParser(description="Augment images and labels")
-    parser.add_argument("-i", "--images_dir", type=str, help="Path to the images directory")
-    parser.add_argument("-a", "--annotations_dir", type=str, help="Path to the annotations directory")
-    parser.add_argument("-o", "--output_dir", type=str, help="Path to the output directory")
-    args = parser.parse_args()
-
+def image_augmentation(images_dir,annotations_dir):
     augmentation = [
         A.Rotate(limit=10, p=1),
         A.RandomBrightnessContrast(p=1),
         A.HueSaturationValue(p=1),
     ]
 
-    images_dir = args.images_dir
-    annotations_dir = args.annotations_dir
     output_images_dir = os.path.join(args.output_dir, "augmented_images")
     output_annotations_dir = os.path.join(args.output_dir, "augmented_labels")
 
@@ -89,3 +80,14 @@ if __name__=="__main__":
             # axs[1].axis('off')
             # plt.tight_layout()
             # plt.show()
+
+if __name__=="__main__":
+    parser = argparse.ArgumentParser(description="Augment images and labels")
+    parser.add_argument("-i", "--images_dir", type=str, help="Path to the images directory")
+    parser.add_argument("-a", "--annotations_dir", type=str, help="Path to the annotations directory")
+    parser.add_argument("-o", "--output_dir", type=str, help="Path to the output directory")
+    args = parser.parse_args()    
+    images_dir = args.images_dir
+    annotations_dir = args.annotations_dir
+
+    image_augmentation(images_dir,annotations_dir)
