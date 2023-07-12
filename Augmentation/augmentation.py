@@ -6,15 +6,15 @@ import matplotlib.pyplot as plt
 import albumentations as A
 import numpy as np
 
-def image_augmentation(images_dir,annotations_dir):
+def image_augmentation(images_dir,annotations_dir,output_dir):
     augmentation = [
         A.Rotate(limit=10, p=1),
         A.RandomBrightnessContrast(p=1),
         A.HueSaturationValue(p=1),
     ]
 
-    output_images_dir = os.path.join(args.output_dir, "augmented_images")
-    output_annotations_dir = os.path.join(args.output_dir, "augmented_labels")
+    output_images_dir = os.path.join(output_dir, "augmented_images")
+    output_annotations_dir = os.path.join(output_dir, "augmented_labels")
 
     os.makedirs(output_images_dir, exist_ok=True)
     os.makedirs(output_annotations_dir, exist_ok=True)
@@ -89,5 +89,6 @@ if __name__=="__main__":
     args = parser.parse_args()    
     images_dir = args.images_dir
     annotations_dir = args.annotations_dir
+    output_dir=args.output_dir
 
-    image_augmentation(images_dir,annotations_dir)
+    image_augmentation(images_dir,annotations_dir,output_dir)
