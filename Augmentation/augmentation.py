@@ -15,6 +15,7 @@ augmentation = [
     A.Rotate(limit=10, p=1),
     A.RandomBrightnessContrast(p=1),
     A.HueSaturationValue(p=1),
+    A.Resize(512,512,interpolation=1,always_apply=False, p=1)
 ]
 
 images_dir = args.images_dir
