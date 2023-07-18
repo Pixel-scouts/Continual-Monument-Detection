@@ -2,8 +2,6 @@ import albumentations as A
 import cv2
 import numpy as np
 from albumentations.pytorch import ToTensorV2
-from config import DEVICE, CLASSES as classes
-
 
 import datetime
 import errno
