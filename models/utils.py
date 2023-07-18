@@ -43,11 +43,6 @@ def collate_fn(batch):
 # define the training tranforms
 def get_train_transform():
     return A.Compose([
-        A.Flip(0.5),
-        A.RandomRotate90(0.5),
-        A.MotionBlur(p=0.2),
-        A.MedianBlur(blur_limit=3, p=0.1),
-        A.Blur(blur_limit=3, p=0.1),
         ToTensorV2(p=1.0),
     ], bbox_params={
         'format': 'pascal_voc',
@@ -63,7 +58,7 @@ def get_valid_transform():
         'label_fields': ['labels']
     })
 
-def show_tranformed_image(train_loader):
+def show_tranformed_image(train_loader,DEVICE):
     """
     This function shows the transformed images from the `train_loader`.
     Helps to check whether the tranformed images along with the corresponding
@@ -71,7 +66,7 @@ def show_tranformed_image(train_loader):
     Only runs if `VISUALIZE_TRANSFORMED_IMAGES = True` in config.py.
     """
     if len(train_loader) > 0:
-        for i in range(1):
+        for i in range(5):
             images, targets = next(iter(train_loader))
             images = list(image.to(DEVICE) for image in images)
             targets = [{k: v.to(DEVICE) for k, v in t.items()} for t in targets]

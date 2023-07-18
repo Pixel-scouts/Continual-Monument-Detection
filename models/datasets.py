@@ -3,10 +3,11 @@ import cv2
 import numpy as np
 import os
 import glob as glob
+import argparse
 from xml.etree import ElementTree as et
-from config import CLASSES, RESIZE_TO, TRAIN_DIR, VALID_DIR, BATCH_SIZE
+from .config import CLASSES
 from torch.utils.data import Dataset, DataLoader
-from utils import collate_fn, get_train_transform, get_valid_transform
+from .utils import collate_fn, get_train_transform, get_valid_transform
 
 # the dataset class
 class MonumentsDataset(Dataset):
@@ -19,22 +20,24 @@ class MonumentsDataset(Dataset):
         
         # get all the image paths in sorted order
         self.image_paths = glob.glob(f"{self.dir_path}/images/*.jpg")
+        
         # self.annotation_paths = glob.glob(f"{self.dir_path}/annotations/*.xml")
         self.all_images = [image_path.split('/')[-1] for image_path in self.image_paths]
         self.all_images = sorted(self.all_images)
+        print(self.all_images[:5])
     def __getitem__(self, idx):
         # capture the image name and the full image path
         image_name = self.all_images[idx]
         image_path = os.path.join(self.dir_path, image_name)
         # read the image
-        image = cv2.imread(image_path)
+        image = cv2.imread(image_path).astype(np.float32)
         # convert BGR to RGB color format
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
+        # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
         image_resized = cv2.resize(image, (self.width, self.height))
         image_resized /= 255.0
         
         # capture the corresponding XML file for getting the annotations
-        annot_filename = image_name[:-4] + '.xml'
+        annot_filename = os.path.splitext(os.path.basename(image_path))[0] + '.xml'
         annot_file_path = os.path.join(self.dir_path,"annotations", annot_filename)
         
         boxes = []
@@ -99,25 +102,26 @@ class MonumentsDataset(Dataset):
         return len(self.all_images)
     
 # prepare the final datasets and data loaders
-train_dataset = MonumentsDataset(TRAIN_DIR, RESIZE_TO, RESIZE_TO, CLASSES, get_train_transform())
-valid_dataset = MonumentsDataset(VALID_DIR, RESIZE_TO, RESIZE_TO, CLASSES, get_valid_transform())
-train_loader = DataLoader(
-    train_dataset,
-    batch_size=BATCH_SIZE,
-    shuffle=True,
-    num_workers=0,
-    collate_fn=collate_fn
-)
+# train_dataset = MonumentsDataset(TRAIN_DIR, RESIZE_TO, RESIZE_TO, CLASSES, get_train_transform())
+# valid_dataset = MonumentsDataset(VALID_DIR, RESIZE_TO, RESIZE_TO, CLASSES, get_valid_transform())
+# num_samples = len(train_dataset)
+# train_loader = DataLoader(
+#     train_dataset,
+#     batch_size=BATCH_SIZE,
+#     shuffle=True,
+#     num_workers=4,
+#     collate_fn=collate_fn
+# )
 
-valid_loader = DataLoader(
-    valid_dataset,
-    batch_size=BATCH_SIZE,
-    shuffle=False,
-    num_workers=0,
-    collate_fn=collate_fn
-)
-print(f"Number of training samples: {len(train_dataset)}")
-print(f"Number of validation samples: {len(valid_dataset)}\n")
+# valid_loader = DataLoader(
+#     valid_dataset,
+#     batch_size=BATCH_SIZE,
+#     shuffle=False,
+#     num_workers=0,
+#     collate_fn=collate_fn
+# )
+# print(f"Number of training samples: {len(train_dataset)}")
+# print(f"Number of validation samples: {len(valid_dataset)}\n")
 
 
 # execute datasets.py using Python command from Terminal...
@@ -125,13 +129,20 @@ print(f"Number of validation samples: {len(valid_dataset)}\n")
 # USAGE: python datasets.py
 if __name__ == '__main__':
     # sanity check of the Dataset pipeline with sample visualization
+
+    parser = argparse.ArgumentParser(prog='Resize',description="Sanity check of the Dataset")
+    parser.add_argument("-t", "--train_dir", type=str, help="Path to the directory containing training set")
+    args = parser.parse_args()
+    TRAIN_DIR = args.train_dir
+
     dataset = MonumentsDataset(
-        TRAIN_DIR, RESIZE_TO, RESIZE_TO, CLASSES
+        TRAIN_DIR, 512, 512, CLASSES
     )
     print(f"Number of training images: {len(dataset)}")
     
     # function to visualize a single sample
     def visualize_sample(image, target):
+        # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         box = target['boxes'][0]
         label = CLASSES[target['labels']]
         cv2.rectangle(
@@ -149,4 +160,6 @@ if __name__ == '__main__':
     NUM_SAMPLES_TO_VISUALIZE = 5
     for i in range(NUM_SAMPLES_TO_VISUALIZE):
         image, target = dataset[i]
+        print(type(image))
         visualize_sample(image, target)
+    cv2.destroyAllWindows()
