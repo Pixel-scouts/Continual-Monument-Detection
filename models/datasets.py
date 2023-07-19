@@ -20,15 +20,16 @@ class MonumentsDataset(Dataset):
         
         # get all the image paths in sorted order
         self.image_paths = glob.glob(f"{self.dir_path}/images/*.jpg")
-        
+        print(self.image_paths[:5])
         # self.annotation_paths = glob.glob(f"{self.dir_path}/annotations/*.xml")
-        self.all_images = [image_path.split('/')[-1] for image_path in self.image_paths]
+        # self.all_images = [image_path.split('\\')[-1] for image_path in self.image_paths]
+        self.all_images = [os.path.splitext(os.path.basename(image_path))[0]+ '.jpg' for image_path in self.image_paths]
         self.all_images = sorted(self.all_images)
         print(self.all_images[:5])
     def __getitem__(self, idx):
         # capture the image name and the full image path
         image_name = self.all_images[idx]
-        image_path = os.path.join(self.dir_path, image_name)
+        image_path = os.path.join(self.dir_path, "images",image_name)
         # read the image
         image = cv2.imread(image_path).astype(np.float32)
         # convert BGR to RGB color format
@@ -168,7 +169,7 @@ if __name__ == '__main__':
 # train_split = 0.8
 # random_seed = 42
 
-# dataset_size = len(dataset)cls
+# dataset_size = len(dataset)clscco
 # validation_split = .2
 # random_seed= 42
 # indices = list(range(dataset_size))
