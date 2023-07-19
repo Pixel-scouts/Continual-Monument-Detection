@@ -70,14 +70,18 @@ class MonumentsDataset(Dataset):
             xmin_final = (xmin/image_width)*self.width
             xmax_final = (xmax/image_width)*self.width
             ymin_final = (ymin/image_height)*self.height
-            yamx_final = (ymax/image_height)*self.height
+            ymax_final = (ymax/image_height)*self.height
             
-            boxes.append([xmin_final, ymin_final, xmax_final, yamx_final])
+            boxes.append([xmin_final, ymin_final, xmax_final, ymax_final])
         
         # bounding box to tensor
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
         # area of the bounding boxes
-        area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+        try:
+            area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+        except:
+            area=0
+            print(image_path)
         # no crowd instances
         iscrowd = torch.zeros((boxes.shape[0],), dtype=torch.int64)
         # labels to tensor
