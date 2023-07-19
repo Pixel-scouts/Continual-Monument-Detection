@@ -163,3 +163,22 @@ if __name__ == '__main__':
         print(type(image))
         visualize_sample(image, target)
     cv2.destroyAllWindows()
+
+
+# train_split = 0.8
+# random_seed = 42
+
+# dataset_size = len(dataset)cls
+# validation_split = .2
+# random_seed= 42
+# indices = list(range(dataset_size))
+# split = int(np.floor(validation_split * dataset_size))
+# train_indices, val_indices = indices[split:], indices[:split]
+
+# train_sampler = SubsetRandomSampler(train_indices)
+# valid_sampler =  SequentialSampler(val_indices)
+
+# train_loader = torch.utils.data.DataLoader(dataset, batch_size=64, 
+#                                            sampler=train_sampler)
+# validation_loader = torch.utils.data.DataLoader(dataset, batch_size=64,
+#                                                 sampler=valid_sampler)
