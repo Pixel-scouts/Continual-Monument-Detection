@@ -8,39 +8,25 @@ TRAIN_DIR = ''
 # validation images and XML files directory
 VALID_DIR = ''
 # classes: 0 index is reserved for background
-CLASSES = ['indrapura',
- 'kala-bhairava',
- 'trailokya mohan',
- 'taleju bell_KDS',
- 'taleju temple',
- 'bhuvana lakshmeshvara',
- 'vishnu temple',
- 'gaddi durbar',
- 'kumari ghar',
- 'basantapur tower',
- 'lalitpur tower',
- 'narayan temple',
- 'jagannatha temple',
- 'degu tale temple_KDS',
- 'panchamukhi hanuman',
- 'shveta bhairava',
- 'kritipur tower',
- '\\',
- 'chasin dega',
- 'pratap malla column',
- 'bhimeleshvara',
- 'kasthamandap',
- 'kavindrapura sattal',
- 'shiva temple',
- 'simha sattal',
- 'garud',
- 'bhagavati temple',
- 'hanuman idol',
- 'bhaktapur tower',
- 'king statue',
- 'degutale temple',
- 'kotilingeshvara']
-NUM_CLASSES = 2
+CLASSES = ['kiranteshwor mahadev', 
+           'charumati', 
+           'kumaristhan', 
+           'ume_maheshwara', 
+           'jaya bageshwori', 
+           'birupakshya', 
+           'Naxal Bhagwati', 
+           'Krishna_temple _kobahal', 
+           'chakku bakku', 
+           'golden temple', 
+           'Ram Mandir', 
+           'uma maheshwor', 
+           'Maitidevi Temple', 
+           'guyeshwori', 
+           'nagarmandap shree kriti bihar', 
+           'Jalbinayak'
+        ]
+
+NUM_CLASSES = len(CLASSES)
 # whether to visualize images after crearing the data loaders
 VISUALIZE_TRANSFORMED_IMAGES = False
 # location to save model and plots
