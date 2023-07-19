@@ -50,6 +50,7 @@ class MonumentsDataset(Dataset):
         image_width = image.shape[1]
         image_height = image.shape[0]
         if len(root.findall('object')) == 0:
+            print(image_path)
             xmin_final = -1
             xmax_final =-1
             ymin_final = -1
@@ -57,7 +58,8 @@ class MonumentsDataset(Dataset):
             boxes.append([xmin_final, ymin_final, xmax_final, ymax_final])
             # Handle XML file without any objects (e.g., skip or add dummy annotation)
         else:
-        # box coordinates for xml files are extracted and corrected for image size given
+            print(len(root.findall('object')))
+            # box coordinates for xml files are extracted and corrected for image size given
             for member in root.findall('object'):
                 # map the current object name to `classes` list to get...
                 # ... the label index and append to `labels` list
