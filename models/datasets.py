@@ -49,30 +49,37 @@ class MonumentsDataset(Dataset):
         # get the height and width of the image
         image_width = image.shape[1]
         image_height = image.shape[0]
-        
-        # box coordinates for xml files are extracted and corrected for image size given
-        for member in root.findall('object'):
-            # map the current object name to `classes` list to get...
-            # ... the label index and append to `labels` list
-            labels.append(self.classes.index(member.find('name').text))
-            
-            # xmin = left corner x-coordinates
-            xmin = int(member.find('bndbox').find('xmin').text)
-            # xmax = right corner x-coordinates
-            xmax = int(member.find('bndbox').find('xmax').text)
-            # ymin = left corner y-coordinates
-            ymin = int(member.find('bndbox').find('ymin').text)
-            # ymax = right corner y-coordinates
-            ymax = int(member.find('bndbox').find('ymax').text)
-            
-            # resize the bounding boxes according to the...
-            # ... desired `width`, `height`
-            xmin_final = (xmin/image_width)*self.width
-            xmax_final = (xmax/image_width)*self.width
-            ymin_final = (ymin/image_height)*self.height
-            ymax_final = (ymax/image_height)*self.height
-            
+        if len(root.findall('object')) == 0:
+            xmin_final = -1
+            xmax_final =-1
+            ymin_final = -1
+            ymax_final = -1
             boxes.append([xmin_final, ymin_final, xmax_final, ymax_final])
+            # Handle XML file without any objects (e.g., skip or add dummy annotation)
+        else:
+        # box coordinates for xml files are extracted and corrected for image size given
+            for member in root.findall('object'):
+                # map the current object name to `classes` list to get...
+                # ... the label index and append to `labels` list
+                labels.append(self.classes.index(member.find('name').text))
+                
+                # xmin = left corner x-coordinates
+                xmin = int(member.find('bndbox').find('xmin').text)
+                # xmax = right corner x-coordinates
+                xmax = int(member.find('bndbox').find('xmax').text)
+                # ymin = left corner y-coordinates
+                ymin = int(member.find('bndbox').find('ymin').text)
+                # ymax = right corner y-coordinates
+                ymax = int(member.find('bndbox').find('ymax').text)
+                
+                # resize the bounding boxes according to the...
+                # ... desired `width`, `height`
+                xmin_final = (xmin/image_width)*self.width
+                xmax_final = (xmax/image_width)*self.width
+                ymin_final = (ymin/image_height)*self.height
+                ymax_final = (ymax/image_height)*self.height
+                
+                boxes.append([xmin_final, ymin_final, xmax_final, ymax_final])
         
         # bounding box to tensor
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
