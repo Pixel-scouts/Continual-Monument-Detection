@@ -15,13 +15,6 @@ def image_augmentation(images_dir,annotations_dir,output_dir):
         A.Blur(blur_limit=9, p=1),
     ]
 
-
-    augmentation = [
-        A.Rotate(limit=10, p=1),
-        A.RandomBrightnessContrast(p=1),
-        A.HueSaturationValue(p=1),
-    ]
-
     output_images_dir = os.path.join(output_dir, "augmented_images")
     output_annotations_dir = os.path.join(output_dir, "augmented_labels")
 
