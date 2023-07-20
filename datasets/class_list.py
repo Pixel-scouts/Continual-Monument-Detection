@@ -41,7 +41,7 @@ def get_file(path:str,label:str):
                 print(xml_file)
             
 
-def get_null_file(path:str,label:str):
+def get_null_file(path:str):
     """
     Search for the given label in the dataset and returns the files containing that label
     
@@ -54,10 +54,6 @@ def get_null_file(path:str,label:str):
     for xml_file in glob.glob(path + '/*.xml'):
         tree = et.parse(xml_file)
         root = tree.getroot()
-        for member in root.findall('object'):
-            class_name = member.find('name').text
-            if(class_name=='\\'):
-               print(xml_file)
-            elif(class_name==label):
-                print(xml_file)
+        if len(root.findall('object')) == 0:
+            print(xml_file)
             
