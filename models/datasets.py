@@ -20,7 +20,7 @@ class MonumentsDataset(Dataset):
         
         # get all the image paths in sorted order
         self.image_paths = glob.glob(f"{self.dir_path}/images/*.jpg")
-        print(self.image_paths[:5])
+        # print(self.image_paths[:5])
         # self.annotation_paths = glob.glob(f"{self.dir_path}/annotations/*.xml")
         # self.all_images = [image_path.split('\\')[-1] for image_path in self.image_paths]
         self.all_images = [os.path.splitext(os.path.basename(image_path))[0]+ '.jpg' for image_path in self.image_paths]
@@ -58,7 +58,7 @@ class MonumentsDataset(Dataset):
             boxes.append([xmin_final, ymin_final, xmax_final, ymax_final])
             # Handle XML file without any objects (e.g., skip or add dummy annotation)
         else:
-            print(len(root.findall('object')))
+            # print(len(root.findall('object')))
             # box coordinates for xml files are extracted and corrected for image size given
             for member in root.findall('object'):
                 # map the current object name to `classes` list to get...
@@ -90,7 +90,7 @@ class MonumentsDataset(Dataset):
             area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
         except:
             area=0
-            print(image_path)
+            # print(image_path)/
         # no crowd instances
         iscrowd = torch.zeros((boxes.shape[0],), dtype=torch.int64)
         # labels to tensor

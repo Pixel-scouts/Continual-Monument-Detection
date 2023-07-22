@@ -50,10 +50,14 @@ def get_null_file(path:str):
         label: The label to search for
         
     """
-
+    null_files=[]
     for xml_file in glob.glob(path + '/*.xml'):
         tree = et.parse(xml_file)
         root = tree.getroot()
-        if len(root.findall('object')) == 0:
+
+        if (len(root.findall('object'))==0):
+            null_files.append(xml_file)
             print(xml_file)
+    return null_files
             
+
