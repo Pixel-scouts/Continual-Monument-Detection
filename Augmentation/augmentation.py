@@ -11,7 +11,7 @@ def image_augmentation(images_dir,annotations_dir,output_dir):
         A.Rotate(limit=5, p=1),
         A.RandomBrightnessContrast (brightness_limit=(-0.5,-0.4), contrast_limit=0, p=1),
         A.HueSaturationValue(p=1),
-        A.MedianBlur(blur_limit=9, p=1),
+        A.MedianBlur(blur_limit=3, p=1),
         A.Blur(blur_limit=9, p=1),
     ]
 

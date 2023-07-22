@@ -8,11 +8,9 @@ import numpy as np
 
 def image_augmentation(images_dir,annotations_dir,output_dir):
     augmentation = [
-        A.Flip(0.5),
-        A.RandomRotate90(0.5),
+        A.Flip(1),
+        A.RandomRotate90(1),
         A.MotionBlur(p=1),
-        A.MedianBlur(blur_limit=9, p=1),
-        A.Blur(blur_limit=9, p=1),
     ]
 
     output_images_dir = os.path.join(output_dir, "augmented_images")
