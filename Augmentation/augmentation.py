@@ -6,13 +6,13 @@ import matplotlib.pyplot as plt
 import albumentations as A
 import numpy as np
 
-def image_augmentation(images_dir,annotations_dir,output_dir):
+def image_augmentation(images_dir,annotations_dir,output_dir,n):
     augmentation = [
         A.Rotate(limit=5, p=1),
         A.RandomBrightnessContrast (brightness_limit=(-0.5,-0.4), contrast_limit=0, p=1),
         A.HueSaturationValue(p=1),
-        A.MedianBlur(blur_limit=9, p=1),
-        A.Blur(blur_limit=9, p=1),
+        A.MedianBlur(blur_limit=3, p=1),
+        A.MotionBlur(p=1),
     ]
 
     output_images_dir = os.path.join(output_dir, "augmented_images")
@@ -23,8 +23,12 @@ def image_augmentation(images_dir,annotations_dir,output_dir):
     os.makedirs(output_annotations_dir, exist_ok=True)
 
     image_files = os.listdir(images_dir)
-
+    save_img=n
+    img_count=0
     for image_file in image_files:
+        img_count+=1
+        if(img_count%save_img!=0):
+            continue
         image_path = os.path.join(images_dir, image_file)
         image = cv2.imread(image_path)
         image_height, image_width = image.shape[:2]
@@ -73,6 +77,7 @@ def image_augmentation(images_dir,annotations_dir,output_dir):
             cv2.imwrite(output_image_file, transformed_image)
             output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_{idx}.xml")
             tree.write(output_xml_file)
+          
 
             # fig, axs = plt.subplots(1, 2, figsize=(10, 5))
             # axs[0].imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
@@ -89,10 +94,12 @@ if __name__=="__main__":
     parser.add_argument("-i", "--images_dir", type=str, help="Path to the images directory")
     parser.add_argument("-a", "--annotations_dir", type=str, help="Path to the annotations directory")
     parser.add_argument("-o", "--output_dir", type=str, help="Path to the output directory")
+    parser.add_argument("-n", "--num", type=str, help="nth image to augment")
     args = parser.parse_args()    
     images_dir = args.images_dir
     annotations_dir = args.annotations_dir
     output_dir=args.output_dir
+    n=int(args.num)
 
-    image_augmentation(images_dir,annotations_dir,output_dir)
+    image_augmentation(images_dir,annotations_dir,output_dir,n)
     print("Augmentation Complete")
