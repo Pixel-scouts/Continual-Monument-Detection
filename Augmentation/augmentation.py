@@ -8,11 +8,11 @@ import numpy as np
 
 def image_augmentation(images_dir,annotations_dir,output_dir,n):
     augmentation = [
-        A.Rotate(limit=5, p=1),
-        A.RandomBrightnessContrast (brightness_limit=(-0.5,-0.4), contrast_limit=0, p=1),
-        A.HueSaturationValue(p=1),
-        A.MedianBlur(blur_limit=3, p=1),
-        A.MotionBlur(p=1),
+        A.Rotate(limit=5, p=0.7),
+        A.RandomBrightnessContrast (brightness_limit=(-0.5,-0.4), contrast_limit=0, p=0.8),
+        A.HueSaturationValue(p=0.75),
+        A.MedianBlur(blur_limit=3, p=0.8),
+        A.MotionBlur(p=0.6),
     ]
     transform = A.Compose(augmentation, bbox_params=A.BboxParams(format='pascal_voc', label_fields=['category_id']))
 
@@ -84,6 +84,8 @@ def image_augmentation(images_dir,annotations_dir,output_dir,n):
         # cv2.imwrite(output_image_file, transformed_image)
         # output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_{idx}.xml")
         tree.write(output_xml_file)
+        img_count+=1
+
           
 
             # fig, axs = plt.subplots(1, 2, figsize=(10, 5))
