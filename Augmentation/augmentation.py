@@ -14,6 +14,7 @@ def image_augmentation(images_dir,annotations_dir,output_dir,n):
         A.MedianBlur(blur_limit=3, p=1),
         A.MotionBlur(p=1),
     ]
+    transform = A.Compose(augmentation, bbox_params=A.BboxParams(format='pascal_voc', label_fields=['category_id']))
 
     output_images_dir = os.path.join(output_dir, "augmented_images")
     output_annotations_dir = os.path.join(output_dir, "augmented_labels")
@@ -26,8 +27,8 @@ def image_augmentation(images_dir,annotations_dir,output_dir,n):
     save_img=n
     img_count=0
     for image_file in image_files:
-        img_count+=1
         if(img_count%save_img!=0):
+            img_count+=1
             continue
         image_path = os.path.join(images_dir, image_file)
         image = cv2.imread(image_path)
@@ -49,34 +50,40 @@ def image_augmentation(images_dir,annotations_dir,output_dir,n):
             bboxes.append([x_min, y_min, x_max, y_max])
             class_labels.append(class_label)
 
-        for idx, transform in enumerate(augmentation):
-            transformed = transform(image=image, bboxes=bboxes, category_id=class_labels)
-            transformed_image = transformed['image']
-            transformed_bboxes = transformed['bboxes']
+    # for idx, transform in enumerate(augmentation):   #Commenting this loop so as to get only one composed augmented image
+        augmented = transform(image=image, bboxes=bboxes, category_id=class_labels)
+        transformed_image = augmented['image']
+        transformed_bboxes = augmented['bboxes']
 
-            for i, bbox in enumerate(transformed_bboxes):
-                x_min, y_min, x_max, y_max = bbox
+        # Saving augmented image and label
+        output_image_file = os.path.join(output_images_dir, f"{os.path.splitext(image_file)[0]}_augmented.jpg")
+        cv2.imwrite(output_image_file, transformed_image)
 
-            # Bounding the coordinates of the bounding boxes
-                x_min = max(0, x_min)
-                y_min = max(0, y_min)
-                x_max = min(image_width, x_max)
-                y_max = min(image_height, y_max)
-                transformed_bboxes[i] = [x_min, y_min, x_max, y_max]
+        output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_augmented.xml")
 
-            # Updating the XML file with the new bounding box coordinates
-                object_elem = root.findall('object')[i]
-                bndbox = object_elem.find('bndbox')
-                bndbox.find('xmin').text = str(int(x_min))
-                bndbox.find('ymin').text = str(int(y_min))
-                bndbox.find('xmax').text = str(int(x_max))
-                bndbox.find('ymax').text = str(int(y_max))
+        for i, bbox in enumerate(transformed_bboxes):
+            x_min, y_min, x_max, y_max = bbox
 
-            # Saving augmented images and labels
-            output_image_file = os.path.join(output_images_dir, f"{os.path.splitext(image_file)[0]}_{idx}.jpg")
-            cv2.imwrite(output_image_file, transformed_image)
-            output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_{idx}.xml")
-            tree.write(output_xml_file)
+        # Bounding the coordinates of the bounding boxes
+            x_min = max(0, x_min)
+            y_min = max(0, y_min)
+            x_max = min(image_width, x_max)
+            y_max = min(image_height, y_max)
+            transformed_bboxes[i] = [x_min, y_min, x_max, y_max]
+
+        # Updating the XML file with the new bounding box coordinates
+            object_elem = root.findall('object')[i]
+            bndbox = object_elem.find('bndbox')
+            bndbox.find('xmin').text = str(int(x_min))
+            bndbox.find('ymin').text = str(int(y_min))
+            bndbox.find('xmax').text = str(int(x_max))
+            bndbox.find('ymax').text = str(int(y_max))
+
+        # Saving augmented images and labels
+        # output_image_file = os.path.join(output_images_dir, f"{os.path.splitext(image_file)[0]}_{idx}.jpg")
+        # cv2.imwrite(output_image_file, transformed_image)
+        # output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_{idx}.xml")
+        tree.write(output_xml_file)
           
 
             # fig, axs = plt.subplots(1, 2, figsize=(10, 5))
