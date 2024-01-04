@@ -393,7 +393,7 @@ class_counts ={
 'Wakupati Narayan Temple': 674,
 'wishing well budhha statue': 714,
 'Yetkha Bahal': 872,
-'yog_narendra_malla_statue': 158
+'yog_narendra_malla_statue': 158,
 }
 
 
