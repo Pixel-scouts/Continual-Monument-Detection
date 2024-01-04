@@ -1,6 +1,6 @@
 import torch
 
-def copy_weights(original_model, new_model, num_classes_original, num_classes_new, DEVICE='cpu'):
+def copy_weights(original_model, new_model, num_classes_original, num_classes_new, alpha=0.7, DEVICE='cpu'):
     """ 
     Copies weights from the original model to the new model
     """
@@ -11,6 +11,11 @@ def copy_weights(original_model, new_model, num_classes_original, num_classes_ne
     for key in state_dict_original:
         if key in state_dict_new and state_dict_original[key].shape == state_dict_new[key].shape:
             state_dict_new[key] = state_dict_original[key]
+
+    for key in state_dict_original:
+        if key in state_dict_new and state_dict_original[key].shape == state_dict_new[key].shape:
+            weighted_average = alpha * state_dict_original[key] + (1 - alpha) * state_dict_new[key]
+            state_dict_original[key] = weighted_average
 
     # Copy class-specific layers with adjustment for the last class
     classes_difference = num_classes_new - num_classes_original
