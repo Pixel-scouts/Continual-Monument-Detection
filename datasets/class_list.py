@@ -62,8 +62,8 @@ def get_null_file(path:str):
         root = tree.getroot()
 
         if (len(root.findall('object'))==0):
-            null_files.append(xml_file)
-            print(xml_file)
+
+            null_files.append(xml_file.encode("unicode-escape"))
     return null_files
             
 
