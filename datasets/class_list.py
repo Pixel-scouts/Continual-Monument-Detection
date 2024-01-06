@@ -20,6 +20,8 @@ def get_classes(path):
             classes[class_name] = classes.get(class_name, 0) + 1
     return classes
 
+
+
 def get_file(path:str,label:str):
     """
     Search for the given label in the dataset and returns the files containing that label
@@ -29,6 +31,7 @@ def get_file(path:str,label:str):
         label: The label to search for
         
     """
+    files=[]
 
     for xml_file in glob.glob(path + '/*.xml'):
         tree = et.parse(xml_file)
@@ -36,9 +39,12 @@ def get_file(path:str,label:str):
         for member in root.findall('object'):
             class_name = member.find('name').text
             if(class_name=='\\'):
-               print(xml_file)
+               files.append(xml_file.encode("unicode_escape"))
             elif(class_name==label):
-                print(xml_file)
+                files.append(xml_file.encode("unicode_escape"))
+
+    return files
+
             
 
 def get_null_file(path:str):
