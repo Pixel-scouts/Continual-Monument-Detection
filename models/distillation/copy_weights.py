@@ -59,3 +59,37 @@ def copy_additional_weights(new_model, addition_model, num_classes_original, num
     new_model.load_state_dict(state_dict_original)
 
     return new_model
+
+def copy_average_weights(old_model, new_model, num_classes_original, num_classes_new, alpha = 0.7,DEVICE='cpu'):
+    # Copy weights from the original model to the new model
+    old_model.to(DEVICE)
+    new_model.to(DEVICE)
+    state_dict_original = old_model.state_dict()
+    state_dict_addition = new_model.state_dict()
+
+    for key in state_dict_original:
+#         if key in state_dict_addition and state_dict_original[key].shape == state_dict_addition[key].shape:
+        if key.startswith('backbone.')or key.startswith('rpn') or key.startswith('roi_heads.box_head'):
+            weighted_average = alpha * state_dict_original[key] + (1 - alpha) * state_dict_addition[key]
+            state_dict_original[key] = weighted_average
+    # Copy class-specific layers with adjustment for the last class
+    total_classes = num_classes_new + num_classes_original
+     # Copy weights and biases for the existing classes
+    state_dict_original['roi_heads.box_predictor.cls_score.weight'][:num_classes_original] = (1-alpha)*state_dict_addition['roi_heads.box_predictor.cls_score.weight'][:num_classes_original]+alpha*state_dict_original['roi_heads.box_predictor.cls_score.weight'][:num_classes_original]
+    state_dict_original['roi_heads.box_predictor.cls_score.bias'][:num_classes_original] = (1-alpha)*state_dict_addition['roi_heads.box_predictor.cls_score.bias'][:num_classes_original]+alpha*state_dict_original['roi_heads.box_predictor.cls_score.bias'][:num_classes_original]
+    state_dict_original['roi_heads.box_predictor.bbox_pred.weight'][:num_classes_original*4] = (1-alpha)*state_dict_addition['roi_heads.box_predictor.bbox_pred.weight'][:num_classes_original*4]+alpha*state_dict_original['roi_heads.box_predictor.bbox_pred.weight'][:num_classes_original*4]
+    state_dict_original['roi_heads.box_predictor.bbox_pred.bias'][:num_classes_original*4] = (1-alpha)*state_dict_addition['roi_heads.box_predictor.bbox_pred.bias'][:num_classes_original*4]+alpha*state_dict_original['roi_heads.box_predictor.bbox_pred.bias'][:num_classes_original*4]
+    
+    
+    # Copy weights and biases for the existing classes
+    state_dict_original['roi_heads.box_predictor.cls_score.weight'][num_classes_original:total_classes] = state_dict_addition['roi_heads.box_predictor.cls_score.weight'][num_classes_original:total_classes]
+    state_dict_original['roi_heads.box_predictor.cls_score.bias'][num_classes_original:total_classes] = state_dict_addition['roi_heads.box_predictor.cls_score.bias'][num_classes_original:total_classes]
+    state_dict_original['roi_heads.box_predictor.bbox_pred.weight'][num_classes_original*4:total_classes*4] = state_dict_addition['roi_heads.box_predictor.bbox_pred.weight'][num_classes_original*4:total_classes*4]
+    state_dict_original['roi_heads.box_predictor.bbox_pred.bias'][num_classes_original*4:total_classes*4] = state_dict_addition['roi_heads.box_predictor.bbox_pred.bias'][num_classes_original*4:total_classes*4]
+    
+    print("Additional weights and Bias Copied")
+    
+    # Load the updated state_dict into the new model
+    old_model.load_state_dict(state_dict_original)
+
+    return old_model

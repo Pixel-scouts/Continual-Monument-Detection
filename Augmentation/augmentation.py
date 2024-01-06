@@ -9,7 +9,7 @@ import numpy as np
 def image_augmentation(images_dir,annotations_dir,output_dir,n):
     augmentation = [
         A.Rotate(limit=5, p=0.7),
-        A.RandomBrightnessContrast (brightness_limit=(-0.5,-0.4), contrast_limit=0, p=0.8),
+        A.RandomBrightnessContrast (brightness_limit=(-0.2,0.2), contrast_limit=0, p=0.8),
         A.HueSaturationValue(p=0.75),
         A.MedianBlur(blur_limit=3, p=0.8),
         A.MotionBlur(p=0.6),
