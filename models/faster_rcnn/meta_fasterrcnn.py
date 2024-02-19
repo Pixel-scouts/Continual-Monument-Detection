@@ -20,7 +20,7 @@ def _default_anchorgen():
     return AnchorGenerator(anchor_sizes, aspect_ratios)
 
 
-def fasterrcnn_resnet50_fpn_(
+def fasterrcnn_resnet50_fpn_meta(
     *,
     weights: Optional[FasterRCNN_ResNet50_FPN_V2_Weights] = None,
     progress: bool = True,
