@@ -9,8 +9,8 @@ import numpy as np
 def image_augmentation(images_dir,annotations_dir,output_dir,n):
     augmentation = [
         A.Rotate(limit=5, p=0.7),
-        A.RandomBrightnessContrast (brightness_limit=(-0.2,0.2), contrast_limit=0, p=0.8),
-        A.HueSaturationValue(p=0.75),
+        A.RandomBrightnessContrast (brightness_limit=(-0.1,0.1), contrast_limit=0, p=0.8),
+        A.HueSaturationValue(hue_shift_limit=10, sat_shift_limit=10, val_shift_limit=10,p=0.8),
         A.MedianBlur(blur_limit=3, p=0.8),
         A.MotionBlur(p=0.6),
     ]
@@ -56,10 +56,10 @@ def image_augmentation(images_dir,annotations_dir,output_dir,n):
         transformed_bboxes = augmented['bboxes']
 
         # Saving augmented image and label
-        output_image_file = os.path.join(output_images_dir, f"{os.path.splitext(image_file)[0]}_augmented.jpg")
+        output_image_file = os.path.join(output_images_dir, f"{os.path.splitext(image_file)[0]}_augmented1.jpg")
         cv2.imwrite(output_image_file, transformed_image)
 
-        output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_augmented.xml")
+        output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_augmented1.xml")
 
         for i, bbox in enumerate(transformed_bboxes):
             x_min, y_min, x_max, y_max = bbox

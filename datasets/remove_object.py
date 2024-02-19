@@ -65,5 +65,5 @@ def rename_label(path: str, old_label: str, new_label: str):
         # Save the modified XML tree back to the file
         et.ElementTree(root).write(xml_file)
 
-rename_label(r"D:\Major\Dataset\subset3\inc17\annotations", "Panchamukhi Hanuman", "panchamukhi hanuman")
+rename_label(r"D:\Major\Dataset\subset4\annotations", "bhimsen temple", "Bhimsen Temple")
 

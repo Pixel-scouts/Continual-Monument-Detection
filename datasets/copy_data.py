@@ -3,7 +3,7 @@ import os
 import glob
 import shutil
 
-def copy_files_for_class(xml_path: str, image_path: str, label: str, destination_path: str,n:int):
+def copy_files_for_class(xml_path: str, image_path: str, label: str, destination_path: str):
     """
     Copy the image and XML files for the specified label to a new location.
 
@@ -46,8 +46,8 @@ def copy_files_for_class(xml_path: str, image_path: str, label: str, destination
             image_destination = os.path.join(destination_path, "images",image_filename)
             shutil.copy(image_source, image_destination)
 
-            if i==n:
-                break
+            # if i==n:
+            #     break
 
 # Example usage:
-copy_files_for_class(r"D:\Major\Inc_16\train_set\annotations", r"D:\Major\Inc_16\train_set\images", "pratappur temple", r"D:\Major\Dataset\subset1\istore16",15)
+copy_files_for_class(r"D:\Major\Dataset\Minor data resized\annotations", r"D:\Major\Dataset\Minor data resized\images", "bhimsen temple", r"D:\Major\Dataset\subset4")
