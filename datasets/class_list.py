@@ -20,6 +20,21 @@ def get_classes(path):
             classes[class_name] = classes.get(class_name, 0) + 1
     return classes
 
+def get_sorted_classes(path):
+    """
+    counts the number of instance of each class present in the dataset and returns it as a dictionary.
+    
+    Args:
+        path: path to folder containing the annotation in XML format
+        
+    """
+    classes=get_classes(path)
+    classes = dict(sorted(classes.items(), key=lambda item: item[1], reverse=True))
+    for key in classes:
+        print(f"{key}:{classes[key]}")
+
+    return classes
+
 
 
 def get_file(path:str,label:str):

@@ -395,25 +395,35 @@ import matplotlib.pyplot as plt
 # 'Yetkha Bahal': 872,
 # 'yog_narendra_malla_statue': 158,
 # }
+# class_counts={
+#     'Akash Bhairav':  850,
+# "Bhadrakali Temple":  907,
+# "Ghantaghar":  862,
+# "Jalbinayak":  877,
+# "Lumadhi Bhadrakali":  1120,
+# "Maitidevi Temple":  978,
+# "Patan Dhoka":  848,
+# "Sano Pashupati":  864,
+# "Swoyambhunath":  854,
+# "Tridevi Temple":  1032,
+# "ashok stupa":  1112,
+# "birupakshya":  930,
+# "chakku bakku": 832,
+# "chamunda mai": 960,
+# "charumati":  1199,
+# "mahadev temple":  851,
+# "pratappur temple":  1174,
+# "taleju bell_KDS":  884,
+# }
+# class_counts={
+#     'Ram Mandir': 1190, 'guyeshwori': 1328, 'Khumbeshwor mahadev': 1196, 'Dharahara': 1099, 'Mahabauddha Asan': 1107, 'Ranipokhari': 1196, 'jame masjid': 1135, 'Dakshin Barahi': 1105, 'Pilot Baba': 1096, 'fasidega temple': 1262, 'Jamachen Monastry': 1171, 'Chandeshwori Temple': 1124, 'hanuman idol': 1136, 'Kotilingeshvara': 1118, 'BalNilkantha': 1122,'red gumba': 1288,'Santaneshwor Mahadev': 1282, 'Sankha Statue': 1254, 'shantidham': 1206, 'Yetkha Bahal': 1180
+# }
+# class_counts={
+#     'trailokya mohan': 1151, 'gaddi durbar': 1109, 'kumari ghar': 1246, 'basantapur tower': 1285, 'lalitpur tower': 1082, 'kirtipur tower': 1066, 'bhimeleshvara': 950, 'garud': 1014, 'kasthamandap': 1062, 'shiva temple': 1156, 'simha sattal': 1018, 'kavindrapura sattal': 1048, 'degu tale': 1026, 'bhaktapur tower': 1064, 'Naxal Bhagwati': 1054,'hanuman idol': 1233, 'panchamukhi hanuman': 1110,'Kotilingeshvara': 1198,'Sano Pashupati': 1188,'Mahabauddha Asan': 1338
+
+# }
 class_counts={
-    'Akash Bhairav':  850,
-"Bhadrakali Temple":  907,
-"Ghantaghar":  862,
-"Jalbinayak":  877,
-"Lumadhi Bhadrakali":  1120,
-"Maitidevi Temple":  978,
-"Patan Dhoka":  848,
-"Sano Pashupati":  864,
-"Swoyambhunath":  854,
-"Tridevi Temple":  1032,
-"ashok stupa":  1112,
-"birupakshya":  930,
-"chakku bakku": 832,
-"chamunda mai": 960,
-"charumati":  1199,
-"mahadev temple":  851,
-"pratappur temple":  1174,
-"taleju bell_KDS":  884,
+    'badrinath temple': 1060, 'vastala temple': 1036, 'Siddhi Lakshmi temple': 1345, 'Chayasilin Mandap': 1236, 'Bhupatindra Malla Column': 1461, 'Gopinath Krishna Temple': 1479, 'mahadev temple': 1051, 'golden gate': 1080, 'taleju bell_BDS': 1512, 'palace of the 55 windows': 1099, 'Nyatapola temple': 1292, 'Bhimsen Temple': 1083, 'bhairavnath temple': 1018, 'Dakshin Barahi': 1014, 'Fasidega Temple': 1057,'Balkumari, Bhaktapur': 1020,'golden temple': 1070, 'jaya bageshwori': 1046,'lokeshwor temple bhaktapur': 1026, 'Wakupati Narayan Temple': 1048
 }
 
 
@@ -454,7 +464,7 @@ count1 = list(class_counts.values())
 # Create a horizontal bar plot
 fig, ax = plt.subplots(figsize=(12,6))
 bars=ax.bar(classes, count1)  # Use barh for horizontal bars
-ax.set_ylim(0, 1400)
+ax.set_ylim(0, 1600)
 ax.set_xlabel('Monuments', fontweight='bold')
 ax.set_ylabel('No of Instances', fontweight='bold')
 plt.tight_layout()
@@ -463,6 +473,6 @@ plt.xticks(rotation=90,fontsize=12)
 # Rotate the y-axis labels
 # plt.gca().invert_yaxis()
 ax.bar_label(bars, labels=count1, padding=3)
-plt.title('Train set')
-plt.savefig("train.png", dpi=None, bbox_inches='tight', format='png')
+plt.title('Total Dataset for subset4')
+plt.savefig("subset4.png", dpi=None, bbox_inches='tight', format='png')
 plt.show()

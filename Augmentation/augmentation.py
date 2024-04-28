@@ -56,10 +56,10 @@ def image_augmentation(images_dir,annotations_dir,output_dir,n):
         transformed_bboxes = augmented['bboxes']
 
         # Saving augmented image and label
-        output_image_file = os.path.join(output_images_dir, f"{os.path.splitext(image_file)[0]}_augmented1.jpg")
+        output_image_file = os.path.join(output_images_dir, f"{os.path.splitext(image_file)[0]}_augmented.jpg")
         cv2.imwrite(output_image_file, transformed_image)
 
-        output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_augmented1.xml")
+        output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_augmented.xml")
 
         for i, bbox in enumerate(transformed_bboxes):
             x_min, y_min, x_max, y_max = bbox
@@ -84,9 +84,7 @@ def image_augmentation(images_dir,annotations_dir,output_dir,n):
         # cv2.imwrite(output_image_file, transformed_image)
         # output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_{idx}.xml")
         tree.write(output_xml_file)
-        img_count+=1
-
-          
+        img_count+=1       
 
             # fig, axs = plt.subplots(1, 2, figsize=(10, 5))
             # axs[0].imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))

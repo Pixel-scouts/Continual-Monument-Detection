@@ -56,10 +56,10 @@ def image_augmentation(images_dir, annotations_dir, output_dir,target_class,n):
                 transformed_image = augmented['image']
                 transformed_bboxes = augmented['bboxes']
 
-                output_image_file = os.path.join(output_images_dir, f"{os.path.splitext(image_file)[0]}_s_augmentation.jpg")
+                output_image_file = os.path.join(output_images_dir, f"{os.path.splitext(image_file)[0]}_s_aug1.jpg")
                 cv2.imwrite(output_image_file, transformed_image)
 
-                output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_s_augmentation.xml")
+                output_xml_file = os.path.join(output_annotations_dir, f"{os.path.splitext(image_file)[0]}_s_aug1.xml")
 
                 for i, bbox in enumerate(transformed_bboxes):
                     x_min, y_min, x_max, y_max = bbox
